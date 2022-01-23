@@ -1,3 +1,5 @@
+from myalgo.ninety.p81_5_friendly_group import main
+
 def test_main():
     inputs = [
         """3 4
@@ -29,8 +31,3 @@ def test_main():
             query.append((a, b))
 
         assert main(N, K, query) == answer
-
-
-def main(N, K, query):
-    print("hello")
-    print(N, K, query)

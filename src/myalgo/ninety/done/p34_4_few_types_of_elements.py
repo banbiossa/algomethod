@@ -45,3 +45,7 @@ def main(N, K, a):
         # 判定
         maxlen = max(maxlen, end - start + 1)
     return maxlen
+
+
+if __name__ == "__main__":
+    test_main()
