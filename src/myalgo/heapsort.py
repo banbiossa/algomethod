@@ -22,10 +22,6 @@ def hsort(A, n, m):
     return A
 
 
-n, m = map(int, input().split())
-A = list(map(int, input().split()))
-A = hsort(A, n, m)
-print(*A)
 
 
 def heapify(A, N):
@@ -70,3 +66,9 @@ def heapsort(A, N, M):
             print(*A)
     result.append(A)
     return result
+
+if __name__ == "__main__":
+    n, m = map(int, input().split())
+    A = list(map(int, input().split()))
+    A = hsort(A, n, m)
+    print(*A)
