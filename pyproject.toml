@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "myalgo"
+version = "0.1.0"
+description = ""
+authors = ["Shota Shimizu <shota_shimizu@caddi.jp>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+jupyterlab = "^3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
