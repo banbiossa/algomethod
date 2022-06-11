@@ -114,7 +114,7 @@ def tree_dp(N, C, G):
     dfs(0)
 
     # 1回dfsして順序を正しく保つ
-    return dp[0][2] % (10 ** 9 + 7)
+    return dp[0][2] % (10**9 + 7)
 
 
 def main(N, C, G):

@@ -4,7 +4,7 @@ def main(N):
     if N % 2 != 0:
         return ans
     # from largest 1 is (, 0 is )
-    for i in range(2 ** N, 0, -1):
+    for i in range(2**N, 0, -1):
         b = as_binary(i, N)
         if is_ok(b, N):
             ans.append(to_paren(b))

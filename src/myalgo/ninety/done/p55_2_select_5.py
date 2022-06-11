@@ -15,8 +15,8 @@ def test_main():
         assert ac(N, P, Q, A) == answer
 
 
-from itertools import combinations
 from functools import reduce
+from itertools import combinations
 
 
 def main(N, P, Q, A):

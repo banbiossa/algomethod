@@ -39,7 +39,7 @@ from collections import defaultdict
 def main(H, W, P):
     # Hをbit全探索
     total = 0
-    for i in range(1, 2 ** H):
+    for i in range(1, 2**H):
         bits = bin(i)[2:].zfill(H)
         userows = [i for i, b in enumerate(bits) if b == "1"]
 

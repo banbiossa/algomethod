@@ -59,6 +59,7 @@ def main(N, machi):
                 spell.add((-diff_x // g, -diff_y // g))
     return len(spell)
 
+
 iam = "a user"
 print("hello")
 print("yes")

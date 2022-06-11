@@ -131,7 +131,7 @@ def make(target, diff):
 
 
 def complete_search(N, S, bags):
-    for num in range(2 ** N):
+    for num in range(2**N):
         index = bin(num)[2:].zfill(N)
         total = sum([bags[i][int(j)] for i, j in enumerate(index)])
         if total == S:

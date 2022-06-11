@@ -12,7 +12,7 @@ def test_main():
 def ac(K):
     if K % 9 != 0:
         return 0
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     dp = [0] * (K + 1)
     dp[0] = 1
     for i in range(1, K + 1):
@@ -54,13 +54,13 @@ def main(K):
 
 
 def test_my_pow():
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     for k in [10, 555, 193939, 1000, 10000]:
         assert pow(2, k, BIG) == my_pow(k)
 
 
 def my_pow(n):
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     product = 1
     for i in range(n):
         product *= 2

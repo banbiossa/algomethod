@@ -1,5 +1,5 @@
-from collections import defaultdict
 from bisect import bisect_right
+from collections import defaultdict
 
 
 def test_main():
@@ -44,7 +44,7 @@ def describe_all(A, K):
     N = len(A)
     d = defaultdict(list)
     # binary 全探索
-    for i in range(2 ** N):
+    for i in range(2**N):
         key = bin(i).count("1")
         if key > K:
             continue

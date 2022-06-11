@@ -15,7 +15,7 @@ def test_main():
 
 
 def simple(L, R, n):
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     assert len(str(L)) == len(str(R)) == n
     a = (L + R) % BIG * (R - L + 1) % BIG * n % BIG
     b = 2
@@ -23,14 +23,14 @@ def simple(L, R, n):
     return revmod(a, b)
 
 
-def modinv(b, mod=10 ** 9 + 7):
+def modinv(b, mod=10**9 + 7):
     return pow(b, mod - 2, mod)
 
 
 def revmod(a, b):
     # a / b -> b*t === a (mod p)
     # t = a * b ** (p-2) (mod p)
-    p = 10 ** 9 + 7
+    p = 10**9 + 7
     return a * modinv(b) % p
 
 
@@ -43,7 +43,7 @@ def test_simple():
 
 
 def main(L, R):
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     total = 0
     for i in range(len(str(L)), len(str(R)) + 1):
         if len(str(L)) < i:
@@ -51,7 +51,7 @@ def main(L, R):
         else:
             l = L
         if len(str(R)) > i:
-            r = 10 ** i - 1
+            r = 10**i - 1
         else:
             r = R
         add = simple(l, r, i)

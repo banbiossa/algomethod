@@ -146,7 +146,7 @@ def main(N, query):
     return ans
 
 
-from math import nan, isnan
+from math import isnan, nan
 
 
 # segfunc

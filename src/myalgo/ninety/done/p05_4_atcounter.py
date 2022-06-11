@@ -25,7 +25,7 @@ aaaaaaaaaaaaaaaaaaaattttttttttttttttttttccccccccccccccccccccoooooooooooooooooooo
 
 def main(N, S):
     """do dp with clean S"""
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     # N = len(S)
     target = "atcoder"
     T = len(target)
@@ -57,7 +57,7 @@ def main(N, S):
 
 def do_dp(S):
     N = len(S)
-    BIG = 10 ** 9 + 7
+    BIG = 10**9 + 7
     target = "atcoder"
     T = len(target)
     dp = [[0] * (N + 1) for _ in range(T + 1)]

@@ -97,7 +97,7 @@ def test_LIS():
 
 
 def LISSample(sample):
-    inf = 10 ** 10
+    inf = 10**10
     res = []
     K = len(sample)
     L = [inf] * (len(sample) + 1)

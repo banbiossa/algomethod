@@ -8,7 +8,7 @@ def test_main():
 
 
 def main(N, K):
-    BIG = 10 ** 5
+    BIG = 10**5
     ans = [N]
 
     end_loop = True
