@@ -1,4 +1,4 @@
-.PHONY: echo up down build update
+.PHONY: echo up down build update performance
 
 ## open algomethod
 open:
@@ -20,6 +20,10 @@ test:
 lint:
 	poetry run black ./
 	poetry run isort ./
+
+## performance
+performance:
+	kernprof -v -l src/myalgo/ninety/p86_5_snukes_favorite_arrays.py
 
 #################################################################################
 # Self Documenting Commands                                                     #

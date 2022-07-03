@@ -22,8 +22,6 @@ def hsort(A, n, m):
     return A
 
 
-
-
 def heapify(A, N):
     for x in range(N // 2 - 1, -1, -1):
         k = x
@@ -66,6 +64,7 @@ def heapsort(A, N, M):
             print(*A)
     result.append(A)
     return result
+
 
 if __name__ == "__main__":
     n, m = map(int, input().split())

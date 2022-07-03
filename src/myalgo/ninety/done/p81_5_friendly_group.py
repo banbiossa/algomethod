@@ -39,7 +39,7 @@ def test_main():
 
 def main(N, K, A, B):
     MAX = max(max(A), max(B))
-    grid = [[0] * (MAX+1) for _ in range(MAX+1)]
+    grid = [[0] * (MAX + 1) for _ in range(MAX + 1)]
     for i in range(N):
         a = A[i]
         b = B[i]
@@ -47,17 +47,17 @@ def main(N, K, A, B):
 
     for i in range(MAX):
         for j in range(MAX):
-            grid[i+1][j+1] += grid[i+1][j]
+            grid[i + 1][j + 1] += grid[i + 1][j]
     for i in range(MAX):
         for j in range(MAX):
-            grid[i+1][j] += grid[i][j]
+            grid[i + 1][j] += grid[i][j]
 
     ans = -1
     for a in range(1, MAX):
         for b in range(1, MAX):
             x = min(a + K, MAX)
-            y = min(b+K, MAX)
-            tmp = grid[x][y] - grid[a-1][y] - grid[x][b-1] + grid[a-1][b-1]
+            y = min(b + K, MAX)
+            tmp = grid[x][y] - grid[a - 1][y] - grid[x][b - 1] + grid[a - 1][b - 1]
             ans = max(ans, tmp)
     return ans
 
@@ -74,10 +74,10 @@ def _____main(N, K, query):
     for i in range(1, MAX - K):
         for j in range(1, MAX - K):
             p_grid[i][j] = (
-                    cumsum[i - 1][j - 1]
-                    + cumsum[i + K][j + K]
-                    - cumsum[i - 1][j + K]
-                    - cumsum[i + K][j - 1]
+                cumsum[i - 1][j - 1]
+                + cumsum[i + K][j + K]
+                - cumsum[i - 1][j + K]
+                - cumsum[i + K][j - 1]
             )
     return p_grid.max()
 
