@@ -23,7 +23,7 @@ lint:
 
 ## performance
 performance:
-	kernprof -v -l src/myalgo/ninety/p86_5_snukes_favorite_arrays.py
+	kernprof -v -l src/myalgo/ninety/${FILE}
 
 #################################################################################
 # Self Documenting Commands                                                     #
