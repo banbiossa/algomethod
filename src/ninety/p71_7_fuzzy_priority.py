@@ -80,99 +80,47 @@ logger.info(f"{N=}, {M=}, {K=}, {A=}")
 # first question is N<10**3 so a dumb solution is ok
 # find k permutations where Ai comes before Bi
 
-# my second guess
-# make a parents = [{}, ...] and just search there
+# we can use topological sort for the k=1 case
+# naive: find a node with no parent and remove
+# fast: d_i: degree of i, put in queue, d-=1 for each child
+
+# now we make this fast with queue
+from collections import deque  # noqa
+
+
+# let's start with naive
+# -> as intended, q2 is TLE (not WA)
 parents = [set() for _ in range(N)]
-for i in range(M):
-    a, b = A[i]
+
+for a, b in A:
     a -= 1
     b -= 1
     parents[b].add(a)
 
-logger.info(f"{parents=}")
-
-
-def find(visited: list):
-    if len(visited) == N:
-        yield visited
-        return
-    for i in range(N):
-        if i in visited:
-            continue
-        # check if all parents are visited
-        if not parents[i].issubset(visited):
-            continue
-        # we can add to path and go deeper
-        yield from find(visited + [i])
-
-
-# find all the paths
-good = []
-for path in find([]):
-    good.append(path)
-    if len(good) == K:
+# we only find 1 path
+path = []
+used = [False] * N
+while True:
+    if len(path) == N:
+        print(" ".join(str(x + 1) for x in path))
+        exit(0)
         break
 
-if len(good) < K:
-    print(-1)
-    exit(0)
-else:
-    for i in range(K):
-        print(" ".join(str(x + 1) for x in good[i]))
+    choose = False
+    for i in range(N):
+        if len(parents[i]) != 0 or used[i]:
+            continue
+        path.append(i)
+        used[i] = True
+        choose = True
 
+        # remove i from all parents
+        for j in range(N):
+            if i in parents[j]:
+                parents[j].remove(i)
 
-# my first guess
-# 1. make a connected graph of the Ai and Bi
-#  1.1 [0,1,2] [3,4] [5]
-# 2. DFS to find all the paths
-#  2.1 at each intersection, you can choose one head
-#   2.1.1 eg. 0 or 3 or 5
-
-# the diffucult case is when you have multiple heads
-# so like
-# 0    5
-# | \ /
-# 1  2
-# |  |
-# 3  4
-# in this case, if you pop 0, [1,3] and [2,4]
-# will be added as "heads"
-
-# so we need some kind of tree structure
-# to keep track of the heads
-
-
-# class Node:
-#     def __init__(self, value: int):
-#         self.value = value
-#         self.children: list[Node] = []
-#         self.parents: list[Node] = []
-#         self.visited = False
-
-#     def add_child(self, child: Node):
-#         self.children.append(child)
-#         child.parents.append(self)
-
-#     def __repr__(self):
-#         return f"Node({self.value})->{self.children}"
-
-
-# nodes = [Node(i) for i in range(N)]
-
-# # add the edges (a graph)
-# for i in range(M):
-#     a, b = A[i]
-#     a -= 1
-#     b -= 1
-#     nodes[a].add_child(nodes[b])
-
-
-# logger.info(f"{nodes=}")
-
-
-# from collections import deque
-
-# que = deque([n for n in nodes if not n.parents])
-# logger.info(f"initial {que=}")
-
-# good = []
+    # we weren't able to find a node
+    if not choose:
+        print(-1)
+        exit(0)
+        break
