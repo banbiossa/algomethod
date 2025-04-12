@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import sys
+
+sys.setrecursionlimit(10**6)
+
 # N M K
 # A1 B1
 # ...
@@ -77,43 +81,75 @@ N, M, K, A = parse(problem)
 
 logger.info(f"{N=}, {M=}, {K=}, {A=}")
 
+
 # first question is N<10**3 so a dumb solution is ok
 # find k permutations where Ai comes before Bi
 
-# we can use topological sort for the k=1 case
-# naive: find a node with no parent and remove
-# fast: d_i: degree of i, put in queue, d-=1 for each child
+# for the first case, we do a simple DFS
+# for the next case, we do an optimized DFS
 
-# now we make this fast with queue
-from collections import deque  # noqa
-
-parents = [set() for _ in range(N)]
-children = [set() for _ in range(N)]
+G = [[] for _ in range(N)]
+di = [0] * N
 
 for a, b in A:
     a -= 1
     b -= 1
-    parents[b].add(a)
-    children[a].add(b)
+    di[b] += 1
+    G[a].append(b)
 
-# make d (degree) array
-d = [len(x) for x in parents]
+# we copy other people's code
+from collections import deque  # noqa
+import copy  # noqa
 
-que = deque([i for i in range(N) if d[i] == 0])
+que = deque([i for i, x in enumerate(di) if x == 0])
 
-path = []
-while que:
-    i = que.popleft()
-    path.append(i)
-    # d-1 for each child
-    for j in children[i]:
-        d[j] -= 1
-        if d[j] == 0:
-            que.append(j)
+# path, di, next
+all_que = deque([([], di, que)])
 
-if len(path) != N:
+res = []
+while all_que:
+    if len(res) == K:
+        break
+    path, d, q = all_que.popleft()
+
+    # end if their's nothing to do
+    if not q:
+        if len(path) == N:
+            res.append(path)
+            continue
+        else:
+            break
+
+    # if there's only 1 in que use that
+    if len(q) == 1 or len(all_que) >= K - len(res) - 1:
+        v = q.popleft()
+        path.append(v)
+        for u in G[v]:
+            d[u] -= 1
+            if d[u] == 0:
+                q.append(u)
+        all_que.append((path, d, q))
+        continue
+
+    # use top K if there's more than 1
+    ct = min(len(q), K - len(all_que) - len(res))
+    if ct <= 0:
+        continue
+    for i in range(ct):
+        d1 = d[:]
+        path1 = path[:]
+        q1 = copy.deepcopy(q)
+        v = q[i]
+        path1.append(v)
+        del q1[i]
+        for u in G[v]:
+            d1[u] -= 1
+            if d1[u] == 0:
+                q1.append(u)
+        all_que.append((path1, d1, q1))
+
+if len(res) < K:
     print(-1)
-    exit(0)
-
-# now we have a topological sort
-print(" ".join(str(x + 1) for x in path))
+else:
+    for r in res:
+        print(" ".join(str(x + 1) for x in r))
