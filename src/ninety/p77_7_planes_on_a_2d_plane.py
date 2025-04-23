@@ -144,69 +144,91 @@ B = [D(x, y) for x, y in B]
 
 from collections import deque  # noqa
 
+# TO CHAPGPT: this is the template actual code from here
 
-@dataclass
-class Candidate:
-    n: int  # index
-    d: int  # direction
-    direction: list  # keeps track of A side planes directions
+# we make a graph of the planes
+# red:  -T     +T
+#         \  /
+# blue:  original
+# if the number of red==blue, we can find a solution
 
-    def __post_init__(self):
-        self.plane = B[self.n]
+# make a map of A-T, A+T -> A
+map_A = {}
+for i in range(N):
+    a_minus_t = A[i].x - T
+    a_plus_t = A[i].x + T
+    if a_minus_t not in map_A:
+        map_A[a_minus_t] = set()
+    if a_plus_t not in map_A:
+        map_A[a_plus_t] = set()
+    map_A[a_minus_t].add(i)
+    map_A[a_plus_t].add(i)
 
-    @property
-    def dt(self):
-        # the destination of the candidate
-        return self.plane.x + self.d * T
+logger.info(f"{map_A=}")
 
+# make graphA, and graphB
+# a only connects to b, b only connects to a
+graph_A = [set() for _ in range(N)]
+graph_B = [set() for _ in range(N)]
 
-# we keep the que
-que = deque(
-    [
-        Candidate(0, -1, [None] * N),
-        Candidate(0, 1, [None] * N),
-    ],
-)
-
-# our basic idea is to start from the B side (1 to N)
-# then go 1 to N and check if there is a corresponding A side
-# we will go depth first by que.appendleft and que.popleft
-while que:
-    c = que.popleft()
-
-    # we find the destination of the candidate
-    found = False
-    for i in range(N):  # loop through the A planes
-        if c.direction[i] is not None:  # skip if plane A[i] is already set
-            continue
-        # if we find one, we use that
-        # even if there are multiple, we can just use the first one
-        # because the order of the planes does not matter
-        if c.dt == A[i].x:
-            found = True
-            c.direction[i] = c.d  # save the direction
-            break
-
-    if not found:
+for i in range(N):
+    if B[i].x not in map_A:
         continue
+    # B[i].x in map_A
+    for j in map_A[B[i].x]:
+        graph_A[j].add(i)
+        graph_B[i].add(j)
 
-    # but if already c.n == N-1, we are done
-    # the answer is the direction of the A planes
-    # so we print that (and save that later)
-    if c.n == N - 1:
-        # we have found a solution
-        logger.info("found a solution")
-        print("Yes")
-        # print the direction saved for the A planes
-        # we need to map the direction to 1-8
-        x_to_8 = {1: "5", -1: "1"}  # the direction is reversed
-        print(" ".join([x_to_8[c.direction[i]] for i in range(N)]))
+logger.info(f"{graph_A=}, {graph_B=}")
+
+# check if solution exists by dfs
+used_A = [False] * N
+used_B = [False] * N
+
+path = []
+while not all(used_A):
+    # find the first unused A with 1 connection
+    found = False
+    for i in range(N):
+        if not used_A[i] and len(graph_A[i]) == 1:
+            found = True
+            break
+    if not found:
+        # no more unused A
+        print("No")
         exit(0)
 
-    # we found a candidate, so we add n+1 to the que
-    new_direction = c.direction.copy()
-    # add -1 and 1 to the que
-    que.appendleft(Candidate(c.n + 1, -1, new_direction.copy()))
-    que.appendleft(Candidate(c.n + 1, 1, new_direction.copy()))
+    # dfs from A[i]
+    stack = deque()
+    stack.append(i)
+    red = True  # end must be blue
+    while stack:
+        node = stack.pop()
+        if red:
+            used_A[node] = True
+        else:
+            used_B[node] = True
+        red = not red
+        path.append(node)
 
-print("No")
+        # add at most 1 connection
+        if red:
+            # add A
+            for j in graph_A[node]:
+                if not used_A[j]:
+                    stack.append(j)
+                    break
+        else:
+            # add B
+            for j in graph_B[node]:
+                if not used_B[j]:
+                    stack.append(j)
+                    break
+    if red:
+        # if we end on red, we have a problem
+        print("No")
+        exit(0)
+
+# print the path
+print("Yes")
+print(" ".join(map(str, path)))
